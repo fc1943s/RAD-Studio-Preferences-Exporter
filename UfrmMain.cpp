@@ -8,102 +8,55 @@
 
 #pragma package(smart_init)
 #pragma resource "*.fmx"
-TfrmMain *frmMain;
+TfrmMain* frmMain;
 
 __fastcall TfrmMain::TfrmMain(TComponent* Owner) : TForm(Owner)
+{ }
+
+enum class Directories
 {
-}
+	SYSTEM32, WINDOWS, TEMP, WINLETTER
+};
 
-void __fastcall TfrmMain::drpExportDragDrop(TObject *Sender, const TDragObject &Data, const TPointF &Point)
+UnicodeString getDirectory(Directories directory)
 {
-
-	if (Data.Files.Length != 1 || !DirectoryExists(Data.Files[0]))
+	wchar_t result[256];
+	switch(directory)
 	{
-		return;
-	}
-
-	if (((TDropTarget*)(Sender))->Name == "drpExport")
-	{
-		SHELLEXECUTEINFOW info;
-		info.cbSize = sizeof(SHELLEXECUTEINFOW);
-		info.lpFile = L"regedit.exe";
-		info.lpParameters = UnicodeString("/e \"" + Data.Files[0] + "\\registry.reg\" \"HKEY_CURRENT_USER\\Software\\Embarcadero\"").c_str();
-		info.nShow = 0;
-		info.lpVerb = L"open";
-		info.hwnd = NULL;
-		info.fMask = SEE_MASK_NOCLOSEPROCESS;
-		info.lpDirectory = NULL;
-		int exe = ShellExecuteExW(&info);
-		if (exe)
+		case Directories::SYSTEM32:
 		{
-			WaitForSingleObject(info.hProcess, INFINITE);
-			CloseHandle(info.hProcess);
-
-			TStringList* stl = new TStringList;
-			stl->LoadFromFile(Data.Files[0] + "\\registry.reg");
-			for (int i = stl->Count - 1; i >= 0; i--)
-			{
-				if (stl->Strings[i].Pos((UnicodeString)"\"" + "\\\\") > 0 || stl->Strings[i].Pos("C:\\") > 0 || stl->Strings[i].Pos("c:\\") > 0 || stl->Strings[i].Pos("D:\\") > 0 || stl->Strings[i].Pos("d:\\") > 0 || stl->Strings[i].Pos("\"RegOwner\"=\"") > 0)
-				{
-					ListBox1->Items->Add(IntToStr(i) + " - " + stl->Strings[i]);
-					stl->Delete(i);
-				}
-			}
-			stl->SaveToFile(Data.Files[0] + "\\registry.reg");
-
-			TSearchRec sr;
-			UnicodeString dataPath = GetEnvironmentVariableW("AppData") + "\\Embarcadero\\BDS\\9.0\\";
-			if (FindFirst(dataPath + "*.*", faAnyFile, sr) == 0)
-			{
-				do
-				{
-					ListBox1->Items->Add(dataPath + sr.Name);
-
-					if (ExtractFileExt(sr.Name) == ".config" || ExtractFileExt(sr.Name) == ".dst")
-					{
-						// CopyFileW();
-					}
-				}
-				while (FindNext(sr) == 0);
-				FindClose(sr);
-			}
-
-			delete stl;
+			GetSystemDirectoryW(result, 256);
+			break;
 		}
-
-	}
-	else
-	{
-
-	}
-}
-
-void __fastcall TfrmMain::drpExportDragOver(TObject *Sender, const TDragObject &Data, const TPointF &Point, bool &Accept)
-{
-	Accept = true;
-}
-
-void __fastcall TfrmMain::Button1Click(TObject *Sender)
-{
-	TStringList* stl = new TStringList;
-	stl->LoadFromFile("D:\\ae.reg");
-	for (int i = stl->Count - 1; i >= 0; i--)
-	{
-		if (stl->Strings[i].Pos((UnicodeString)"\"" + "\\\\") > 0 || stl->Strings[i].Pos("C:\\") > 0 || stl->Strings[i].Pos("c:\\") > 0 || stl->Strings[i].Pos("D:\\") > 0 || stl->Strings[i].Pos("d:\\") > 0)
+		case Directories::WINDOWS:
 		{
-			ListBox1->Items->Add(IntToStr(i) + " - " + stl->Strings[i]);
-			stl->Delete(i);
+			GetWindowsDirectoryW(result, 256);
+			break;
+		}
+		case Directories::TEMP:
+		{
+			GetTempPathW(256, result);
+			break;
+		}
+		case Directories::WINLETTER:
+		{
+			GetWindowsDirectoryW(result, 256);
+			result[1] = L'\0';
+			break;
 		}
 	}
-	stl->SaveToFile("D:\\ae2.reg");
-	delete stl;
+	return UnicodeString(result);
+
 }
 
-void __fastcall TfrmMain::btnExportClick(TObject *Sender)
+UnicodeString getTempFile()
+{ return getDirectory(Directories::TEMP) + "temp" + FormatDateTime("hhnnsszzz", Now()); }
+
+void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 {
-	if (svdExport->Execute())
+	if(svdExport->Execute())
 	{
-		if (FileExists(svdExport->FileName))
+		if(FileExists(svdExport->FileName))
 		{
 			DeleteFileW(svdExport->FileName);
 		}
@@ -113,46 +66,142 @@ void __fastcall TfrmMain::btnExportClick(TObject *Sender)
 		// Files
 		TSearchRec sr;
 		UnicodeString dataPath = GetEnvironmentVariableW("AppData") + "\\Embarcadero\\BDS\\9.0\\";
-		if (FindFirst(dataPath + "*.*", faAnyFile, sr) == 0)
+		if(FindFirst(dataPath + "*.*", faAnyFile, sr) == 0)
 		{
 			do
 			{
-				if (ExtractFileExt(sr.Name) == ".config" || ExtractFileExt(sr.Name) == ".dst")
+				if(ExtractFileExt(sr.Name) == ".config" || ExtractFileExt(sr.Name) == ".dst")
 				{
 					zip->Add(dataPath + sr.Name, sr.Name, zcStored);
 				}
 			}
-			while (FindNext(sr) == 0);
+			while(FindNext(sr) == 0);
 			FindClose(sr);
 		}
 
 		// Registry
-		// TRegistry reg;
-		// reg.SaveKey("HKEY_CURRENT_USER\\Software\\Embarcadero", "C:\\aa.reg");
+		UnicodeString tempFile = getTempFile();
+
+		SHELLEXECUTEINFOW info;
+		info.cbSize       = sizeof(SHELLEXECUTEINFOW);
+		info.lpFile       = L"regedit.exe";
+		info.lpParameters = UnicodeString("/e \"" + tempFile + "\" \"HKEY_CURRENT_USER\\Software\\Embarcadero\"").c_str();
+		info.nShow        = 0;
+		info.lpVerb       = L"runas";
+		info.hwnd         = NULL;
+		info.fMask        = SEE_MASK_NOCLOSEPROCESS;
+		info.lpDirectory  = NULL;
+		int exe           = ShellExecuteExW(&info);
+		if(exe)
+		{
+			WaitForSingleObject(info.hProcess, INFINITE);
+			CloseHandle(info.hProcess);
+
+			TStringList* stl = new TStringList;
+			stl->LoadFromFile(tempFile);
+			for(int i = stl->Count - 1; i >= 0; i--)
+			{
+				if(stl->Strings[i].Pos((UnicodeString)"\"" + "\\\\") > 0 || stl->Strings[i].Pos("C:\\") > 0 || stl->Strings[i].Pos("c:\\") > 0 || stl->Strings[i].Pos("D:\\") > 0 || stl->Strings[i].Pos("d:\\") > 0 || stl->Strings[i].Pos("\"RegOwner\"=\"") > 0)
+				{
+					stl->Delete(i);
+				}
+			}
+			stl->SaveToFile(tempFile);
+			delete stl;
+		}
+
+		zip->Add(tempFile, "registry.reg", zcDeflate);
 
 		zip->Close();
 		delete zip;
-	}
 
-	return;
+		DeleteFileW(tempFile);
+
+		ShowMessage("File exported successfully.");
+	}
+}
+
+void __fastcall TfrmMain::ImportClick(TObject* Sender)
+{
+
+	if(opdImport->Execute())
+	{
+		TZipFile* zip = new TZipFile;
+		zip->Open(opdImport->FileName, zmRead);
+
+		UnicodeString tempDir = getTempFile() + "\\";
+
+		zip->ExtractAll(tempDir);
+
+		// Files
+		TSearchRec sr;
+		UnicodeString dataPath = GetEnvironmentVariableW("AppData") + "\\Embarcadero\\BDS\\9.0\\";
+		if(FindFirst(tempDir + "*.*", faAnyFile, sr) == 0)
+		{
+			do
+			{
+				if(ExtractFileExt(sr.Name) == ".config" || ExtractFileExt(sr.Name) == ".dst")
+				{
+					DeleteFileW(dataPath + sr.Name);
+					MoveFileW(UnicodeString(tempDir + sr.Name).c_str(), UnicodeString(dataPath + sr.Name).c_str());
+				}
+				if(ExtractFileExt(sr.Name) == ".reg")
+				{
+					SHELLEXECUTEINFOW info;
+					info.cbSize       = sizeof(SHELLEXECUTEINFOW);
+					info.lpFile       = L"regedit.exe";
+					info.lpParameters = UnicodeString("/s \"" + tempDir + sr.Name + "\"").c_str();
+					info.nShow        = 0;
+					info.lpVerb       = L"runas";
+					info.hwnd         = NULL;
+					info.fMask        = SEE_MASK_NOCLOSEPROCESS;
+					info.lpDirectory  = NULL;
+					int exe           = ShellExecuteExW(&info);
+					if(exe)
+					{
+						WaitForSingleObject(info.hProcess, INFINITE);
+						CloseHandle(info.hProcess);
+					}
+					DeleteFileW(tempDir + sr.Name);
+				}
+			}
+			while(FindNext(sr) == 0);
+			FindClose(sr);
+		}
+		// Registry
+
+
+		zip->Close();
+		delete zip;
+		RemoveDir(tempDir);
+
+		ShowMessage("File imported successfully.");
+	}
+}
+
+
+void __fastcall TfrmMain::FormCreate(TObject* Sender)
+{
 	typedef bool(*_IsUserAnAdmin)(VOID);
 	_IsUserAnAdmin IsUserAnAdmin;
 	HMODULE hModule = NULL;
-	hModule = LoadLibraryW(L"shell32.dll");
+	hModule         = LoadLibraryW(L"shell32.dll");
 
 	IsUserAnAdmin = (_IsUserAnAdmin)GetProcAddress(hModule, "IsUserAnAdmin");
 
-	ShowMessage((int)IsUserAnAdmin());
-	CloseHandle(hModule);
-}
-// ---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::ImportClick(TObject *Sender)
-{
-	
-	if (opdImport->Execute())
+	if(!IsUserAnAdmin())
 	{
-		ShowMessage(opdImport->FileName);
+		SHELLEXECUTEINFOW info;
+		info.cbSize       = sizeof(SHELLEXECUTEINFOW);
+		info.lpFile       = ParamStr(0).c_str();
+		info.lpParameters = NULL;
+		info.nShow        = 0;
+		info.lpVerb       = L"runas";
+		info.hwnd         = NULL;
+		info.fMask        = SEE_MASK_NOCLOSEPROCESS;
+		info.lpDirectory  = NULL;
+		ShellExecuteExW(& info);
+		Application->Terminate();
 	}
+	FreeLibrary(hModule);
 }
-// ---------------------------------------------------------------------------
