@@ -1,0 +1,178 @@
+object frmMain: TfrmMain
+  Left = 0
+  Top = 0
+  Caption = 'RAD Studio Preferences Exporter'
+  ClientHeight = 552
+  ClientWidth = 1047
+  Visible = False
+  StyleBook = StyleBook1
+  StyleLookup = 'backgroundstyle'
+  object ListBox1: TListBox
+    Align = alRight
+    Position.Point = '(328,0)'
+    Width = 719.000000000000000000
+    Height = 552.000000000000000000
+    TabOrder = 0
+  end
+  object Button1: TButton
+    Position.Point = '(71,331)'
+    Width = 80.000000000000000000
+    Height = 22.000000000000000000
+    OnClick = Button1Click
+    TabOrder = 1
+    Text = 'Button1'
+  end
+  object drpExport: TDropTarget
+    EnableDragHighlight = False
+    Position.Point = '(9,7)'
+    Width = 142.000000000000000000
+    Height = 139.000000000000000000
+    OnDragOver = drpExportDragOver
+    OnDragDrop = drpExportDragDrop
+    StyleLookup = 'DropTarget1Style1'
+    TabOrder = 2
+    Text = 'Folder to export'
+    object drpImport: TDropTarget
+      EnableDragHighlight = False
+      Position.Point = '(154,1)'
+      Width = 142.000000000000000000
+      Height = 139.000000000000000000
+      OnDragOver = drpExportDragOver
+      OnDragDrop = drpExportDragDrop
+      StyleLookup = 'DropTarget1Style1'
+      TabOrder = 1
+      Text = 'Folder to import'
+    end
+  end
+  object btnExport: TButton
+    Position.Point = '(10,515)'
+    Width = 80.000000000000000000
+    Height = 22.000000000000000000
+    OnClick = btnExportClick
+    TabOrder = 3
+    Text = 'Export'
+    object Button2: TButton
+      Position.Point = '(10,515)'
+      Width = 80.000000000000000000
+      Height = 22.000000000000000000
+      OnClick = btnExportClick
+      TabOrder = 1
+      Text = 'Export'
+    end
+  end
+  object Import: TButton
+    Position.Point = '(100,515)'
+    Width = 80.000000000000000000
+    Height = 22.000000000000000000
+    OnClick = ImportClick
+    TabOrder = 19
+    Text = 'Import'
+    object Button4: TButton
+      Position.Point = '(10,515)'
+      Width = 80.000000000000000000
+      Height = 22.000000000000000000
+      OnClick = btnExportClick
+      TabOrder = 0
+      Text = 'Export'
+    end
+  end
+  object StyleBook1: TStyleBook
+    Resource.Strings = (
+      'object _1: TLayout'
+      '  Align = alClient'
+      '  Position.Point = '#39'(0,33)'#39
+      '  Width = 996.000000000000000000'
+      '  Height = 557.000000000000000000'
+      '  object TLayout'
+      '    StyleName = '#39'DropTarget1Style1'#39
+      '    Position.Point = '#39'(473,254)'#39
+      '    Width = 50.000000000000000000'
+      '    Height = 50.000000000000000000'
+      '    object TRectangle'
+      '      Align = alContents'
+      '      Width = 50.000000000000000000'
+      '      Height = 50.000000000000000000'
+      '      HitTest = False'
+      '      Fill.Kind = bkNone'
+      '      Stroke.Color = x82005ACC'
+      '      StrokeDash = sdDash'
+      '      StrokeThickness = 4.000000000000000000'
+      '      XRadius = 11.000000953674320000'
+      '      YRadius = 11.000000953674320000'
+      '      object TText'
+      '        StyleName = '#39'text'#39
+      '        Align = alBottom'
+      '        Position.Point = '#39'(10,0)'#39
+      '        Width = 30.000000000000000000'
+      '        Height = 50.000000000000000000'
+      '        Padding.Rect = '#39'(10,0,10,0)'#39
+      '        HitTest = False'
+      '        Fill.Color = x82005ACC'
+      '      end'
+      '    end'
+      '    object TFloatKeyAnimation'
+      '      Duration = 0.599999964237213100'
+      '      Loop = True'
+      '      Trigger = '#39'IsDragOver=true'#39
+      '      PropertyName = '#39'Margins.Top'#39
+      '      Keys = <'
+      '        item'
+      '        end'
+      '        item'
+      '          Key = 0.500000000000000000'
+      '          Value = -20.000000000000000000'
+      '        end'
+      '        item'
+      '          Key = 1.000000000000000000'
+      '        end>'
+      '      StartFromCurrent = False'
+      '    end'
+      '    object TPath'
+      '      Align = alCenter'
+      '      Width = 50.000000000000000000'
+      '      Height = 50.000003814697270000'
+      '      HitTest = False'
+      '      Fill.Color = x82005ACC'
+      '      Stroke.Kind = bkNone'
+      '      Data.Path = {'
+      
+        '        100000000000000008EC8343F087A4430100000008EC8343083CFB43' +
+        '02000000'
+      
+        '        35BE7143504DF9430200000012835C43A8E6F54302000000F0674943' +
+        'F803F143'
+      
+        '        0100000008EC8343FC0116440100000008EC8343FC51164401000000' +
+        '00408443'
+      
+        '        FC5116440100000010689A43FC412B4401000000081CD043F803F143' +
+        '02000000'
+      
+        '        915DC64321E0F54302000000919DBB439643F94302000000087CB043' +
+        'F833FB43'
+      
+        '        01000000087CB043F087A4430100000008EC8343F087A44303000000' +
+        '00000000'
+      '        00000000}'
+      '    end'
+      '  end'
+      'end')
+    Left = 275
+    Top = 425
+  end
+  object svdExport: TSaveDialog
+    DefaultExt = 'rad'
+    FileName = 'preferences.rad'
+    Filter = 'preferences.rad'
+    Left = 218
+    Top = 233
+  end
+  object opdImport: TOpenDialog
+    DefaultExt = 'rad'
+    FileName = 'preferences.rad'
+    Filter = 'preferences.rad|preferences.rad'
+    Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing, ofForceShowHidden]
+    Left = 283
+    Top = 233
+  end
+end
