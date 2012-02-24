@@ -3,7 +3,7 @@ object frmMain: TfrmMain
   Top = 0
   Caption = 'RAD Studio Preferences Exporter'
   BorderStyle = bsToolWindow
-  ClientHeight = 143
+  ClientHeight = 157
   ClientWidth = 273
   Visible = False
   OnCreate = FormCreate

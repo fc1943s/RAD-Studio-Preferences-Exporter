@@ -195,7 +195,7 @@ void __fastcall TfrmMain::FormCreate(TObject* Sender)
 		info.cbSize       = sizeof(SHELLEXECUTEINFOW);
 		info.lpFile       = ParamStr(0).c_str();
 		info.lpParameters = NULL;
-		info.nShow        = 0;
+		info.nShow        = 1;
 		info.lpVerb       = L"runas";
 		info.hwnd         = NULL;
 		info.fMask        = SEE_MASK_NOCLOSEPROCESS;

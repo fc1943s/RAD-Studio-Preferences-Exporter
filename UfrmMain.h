@@ -15,6 +15,7 @@ class TfrmMain : public TForm
 	TSaveDialog* svdExport;
 	TOpenDialog* opdImport;
 	TButton*     Import;
+
 	void __fastcall btnExportClick(TObject* Sender);
 	void __fastcall ImportClick(TObject* Sender);
 	void __fastcall FormCreate(TObject* Sender);
