@@ -20,27 +20,27 @@ enum class Directories
 
 UnicodeString getDirectory(Directories directory)
 {
-	wchar_t result[256];
+	wchar_t result[MAX_PATH];
 	switch(directory)
 	{
 		case Directories::SYSTEM32:
 		{
-			GetSystemDirectoryW(result, 256);
+			GetSystemDirectoryW(result, MAX_PATH);
 			break;
 		}
 		case Directories::WINDOWS:
 		{
-			GetWindowsDirectoryW(result, 256);
+			GetWindowsDirectoryW(result, MAX_PATH);
 			break;
 		}
 		case Directories::TEMP:
 		{
-			GetTempPathW(256, result);
+			GetTempPathW(MAX_PATH, result);
 			break;
 		}
 		case Directories::WINLETTER:
 		{
-			GetWindowsDirectoryW(result, 256);
+			GetWindowsDirectoryW(result, MAX_PATH);
 			result[1] = L'\0';
 			break;
 		}
@@ -182,6 +182,8 @@ void __fastcall TfrmMain::ImportClick(TObject* Sender)
 
 void __fastcall TfrmMain::FormCreate(TObject* Sender)
 {
+	halt
+	Application->Free();
 	typedef bool(*_IsUserAnAdmin)(VOID);
 	_IsUserAnAdmin IsUserAnAdmin;
 	HMODULE hModule = NULL;
@@ -204,4 +206,6 @@ void __fastcall TfrmMain::FormCreate(TObject* Sender)
 		Application->Terminate();
 	}
 	FreeLibrary(hModule);
+
+	new TStringList(NULL);
 }

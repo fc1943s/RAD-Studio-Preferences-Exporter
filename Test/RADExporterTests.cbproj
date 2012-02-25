@@ -1,9 +1,9 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{128CF1AD-1316-4E30-91F7-D7F29794D9F9}</ProjectGuid>
+			<ProjectGuid>{6F0B9ACC-A0C0-43FC-93A7-B2C0CB4394F0}</ProjectGuid>
 			<ProjectVersion>13.4</ProjectVersion>
-			<FrameworkType>FMX</FrameworkType>
-			<MainSource>RADExporter.cpp</MainSource>
+			<FrameworkType>VCL</FrameworkType>
+			<MainSource>RADExporterTests.cpp</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -11,11 +11,6 @@
 			<AppType>Application</AppType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
-			<Base>true</Base>
-		</PropertyGroup>
-		<PropertyGroup Condition="('$(Platform)'=='OSX32' and '$(Base)'=='true') or '$(Base_OSX32)'!=''">
-			<Base_OSX32>true</Base_OSX32>
-			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
@@ -40,14 +35,17 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<PackageImports>IPIndyImpl;bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;ibxpress;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;FMXTee;bindengine;soaprtl;DBXOracleDriver;dsnap;DBXInformixDriver;IndyCore;fmxase;CloudService;FmxTeeUI;DBXFirebirdDriver;inet;fmxobj;inetdbxpress;DBXSybaseASADriver;fmxdae;dbexpress;DataSnapIndy10ServerTransport;$(PackageImports)</PackageImports>
-			<ProjectType>FmxGuiApplication</ProjectType>
+			<DCC_UnitSearchPath>$(BDS)\Source\DUnit\src;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+			<DCC_Define>_DEBUG;DUNIT_GUI;$(DCC_Define)</DCC_Define>
+			<ILINK_LibraryPath>$(BDSLIB)\$(PLATFORM)\debug;$(BDS)\source\dUnit\src;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<Multithreaded>true</Multithreaded>
-			<_TCHARMapping>wchar_t</_TCHARMapping>
-			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
-			<AllPackageLibs>rtl.lib;fmx.lib</AllPackageLibs>
 			<UsingDelphiRTL>true</UsingDelphiRTL>
-			<Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
+			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+			<PackageImports>IPIndyImpl;bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;ibxpress;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;soaprtl;bindengine;DBXOracleDriver;dsnap;DBXInformixDriver;IndyCore;fmxase;CloudService;DBXFirebirdDriver;inet;fmxobj;inetdbxpress;DBXSybaseASADriver;fmxdae;dbexpress;DataSnapIndy10ServerTransport;$(PackageImports)</PackageImports>
+			<ProjectType>CppVCLApplication</ProjectType>
+			<DCC_DcuOutput>.</DCC_DcuOutput>
+			<AllPackageLibs>rtl.lib;vcl.lib</AllPackageLibs>
+			<_TCHARMapping>wchar_t</_TCHARMapping>
 			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
 			<DynamicRTL>true</DynamicRTL>
 			<UsePackages>true</UsePackages>
@@ -58,14 +56,10 @@
 			<BCC_ExtendedErrorInfo>true</BCC_ExtendedErrorInfo>
 			<ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\release\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
 		</PropertyGroup>
-		<PropertyGroup Condition="'$(Base_OSX32)'!=''">
-			<IncludePath>$(BDSINCLUDE)\osx\fmx;$(IncludePath)</IncludePath>
-		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base_Win32)'!=''">
-			<ILINK_LibraryPath>C:\Stew\Programming\Projects\RAD Studio Preferences Exporter\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
-			<PackageImports>vcldbx;frx16;TeeDB;Rave100VCL;vclib;Tee;inetdbbde;DBXOdbcDriver;crcontrols160;DBXSybaseASEDriver;vclimg;frxDB16;intrawebdb_120_160;fs16;TeeUI;vclactnband;vcldb;vcldsnap;bindcompvcl;dac160;vclie;vcltouch;Intraweb_120_160;DBXDb2Driver;bcbsmp;websnap;dacvcl160;vclribbon;frxe16;VclSmp;fsDB16;vcl;DataSnapConnectors;DBXMSSQLDriver;CodeSiteExpressPkg;dsnapcon;vclx;webdsnap;bdertl;adortl;bcbie;$(PackageImports)</PackageImports>
+			<PackageImports>vcldbx;TeeDB;Rave100VCL;vclib;Tee;inetdbbde;DBXOdbcDriver;dacfmx160;crcontrols160;DBXSybaseASEDriver;vclimg;intrawebdb_120_160;vclactnband;vcldb;FMXTee;vcldsnap;bindcompvcl;TeeUI;dac160;vclie;unidacvcl160;vcltouch;Intraweb_120_160;DBXDb2Driver;bcbsmp;websnap;DCEF_XE2;dacvcl160;vclribbon;VclSmp;vcl;DataSnapConnectors;DBXMSSQLDriver;CodeSiteExpressPkg;FmxTeeUI;dsnapcon;unidacfmx160;unidac160;vclx;webdsnap;bdertl;adortl;bcbie;$(PackageImports)</PackageImports>
 			<DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-			<IncludePath>$(BDSINCLUDE)\windows\fmx;$(IncludePath)</IncludePath>
+			<IncludePath>$(BDSINCLUDE)\windows\vcl;$(IncludePath)</IncludePath>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 			<Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
@@ -86,46 +80,20 @@
 			<ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
 			<TASM_Debugging>Full</TASM_Debugging>
 			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
-			<ILINK_LibraryPath>$(BDSLIB)\$(PLATFORM)\debug;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-			<DCC_DebugDCUs>true</DCC_DebugDCUs>
-			<DCC_Define>x;xd;FullDebugMode;RawStackTraces;LoadDebugDLLDynamically;$(DCC_Define)</DCC_Define>
-			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DynamicRTL>false</DynamicRTL>
-			<VerInfo_Locale>1033</VerInfo_Locale>
-			<LinkPackageImports>rtl.bpi;fmx.bpi</LinkPackageImports>
+			<LinkPackageImports>rtl.bpi;vcl.bpi</LinkPackageImports>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<Defines>NDEBUG;$(Defines)</Defines>
 			<TASM_Debugging>None</TASM_Debugging>
 		</PropertyGroup>
 		<ItemGroup>
-			<DelphiCompile Include="FastMM4.pas">
-				<BuildOrder>1</BuildOrder>
-			</DelphiCompile>
-			<CppCompile Include="FastMM4BCB.cpp">
+			<CppCompile Include="RADExporterTests.cpp">
 				<BuildOrder>0</BuildOrder>
 			</CppCompile>
-			<DelphiCompile Include="FastMM4Messages.pas">
-				<BuildOrder>0</BuildOrder>
-			</DelphiCompile>
-			<None Include="FastMM4Options.inc"/>
-			<LibFiles Condition="'$(Platform)'=='Win32'" Include="FastMM_FullDebugMode.lib">
-				<BuildOrder>2</BuildOrder>
-				<IgnorePath>true</IgnorePath>
-			</LibFiles>
-			<CppCompile Include="RADExporter.cpp">
-				<BuildOrder>1</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UfrmMain.cpp">
-				<Form>frmMain</Form>
-				<FormType>fmx</FormType>
-				<DependentOn>UfrmMain.h</DependentOn>
-				<BuildOrder>2</BuildOrder>
-			</CppCompile>
-			<FormResources Include="UfrmMain.fmx"/>
+			<None Include="RADExporterTests.todo"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -140,7 +108,7 @@
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>CPlusPlusBuilder.Personality.12</Borland.Personality>
-			<Borland.ProjectType>FmxGuiApplication</Borland.ProjectType>
+			<Borland.ProjectType>CppVCLApplication</Borland.ProjectType>
 			<BorlandProject>
 				<CPlusPlusBuilder.Personality>
 					<VersionInfo>
@@ -155,7 +123,7 @@
 						<VersionInfo Name="Special">False</VersionInfo>
 						<VersionInfo Name="Private">False</VersionInfo>
 						<VersionInfo Name="DLL">False</VersionInfo>
-						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="Locale">1046</VersionInfo>
 						<VersionInfo Name="CodePage">1252</VersionInfo>
 					</VersionInfo>
 					<VersionInfoKeys>
@@ -176,16 +144,16 @@
 						<ProjectProperties Name="VerifyPackages">True</ProjectProperties>
 					</ProjectProperties>
 					<Source>
-						<Source Name="MainSource">RADExporter.cpp</Source>
+						<Source Name="MainSource">RADExporterTests.cpp</Source>
 					</Source>
-					<Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\bcboffice2k160.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\bcbofficexp160.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-					</Excluded_Packages>
 				</CPlusPlusBuilder.Personality>
 				<Deployment/>
+				<UnitTesting>
+					<TestFramework>DUnit / C++ Win32</TestFramework>
+					<TestRunner>GUI</TestRunner>
+					<SourceProjectName>C:\Stew\Programming\Projects\RAD Studio Preferences Exporter\RADExporter.cbproj</SourceProjectName>
+					<TestProjectName/>
+				</UnitTesting>
 				<Platforms>
 					<Platform value="OSX32">False</Platform>
 					<Platform value="Win32">True</Platform>
