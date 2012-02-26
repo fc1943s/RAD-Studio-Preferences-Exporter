@@ -39,6 +39,12 @@
 			<CfgParent>Base</CfgParent>
 			<Base>true</Base>
 		</PropertyGroup>
+		<PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+			<Cfg_2_Win32>true</Cfg_2_Win32>
+			<CfgParent>Cfg_2</CfgParent>
+			<Cfg_2>true</Cfg_2>
+			<Base>true</Base>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
 			<PackageImports>IPIndyImpl;bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;ibxpress;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;FMXTee;bindengine;soaprtl;DBXOracleDriver;dsnap;DBXInformixDriver;IndyCore;fmxase;CloudService;FmxTeeUI;DBXFirebirdDriver;inet;fmxobj;inetdbxpress;DBXSybaseASADriver;fmxdae;dbexpress;DataSnapIndy10ServerTransport;$(PackageImports)</PackageImports>
 			<ProjectType>FmxGuiApplication</ProjectType>
@@ -91,7 +97,7 @@
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
 			<DCC_DebugDCUs>true</DCC_DebugDCUs>
-			<DCC_Define>x;xd;FullDebugMode;RawStackTraces;LoadDebugDLLDynamically;$(DCC_Define)</DCC_Define>
+			<UsingDelphiRTL>false</UsingDelphiRTL>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<DynamicRTL>false</DynamicRTL>
 			<VerInfo_Locale>1033</VerInfo_Locale>
@@ -101,21 +107,16 @@
 			<Defines>NDEBUG;$(Defines)</Defines>
 			<TASM_Debugging>None</TASM_Debugging>
 		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+			<LinkPackageStatics>rtl.lib;fmx.lib</LinkPackageStatics>
+			<UsePackages>false</UsePackages>
+			<UsingDelphiRTL>false</UsingDelphiRTL>
+			<DynamicRTL>false</DynamicRTL>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Define>x;xd;FullDebugMode;LoadDebugDLLDynamically;RawStackTraces;$(DCC_Define)</DCC_Define>
+			<VerInfo_Locale>1033</VerInfo_Locale>
+		</PropertyGroup>
 		<ItemGroup>
-			<DelphiCompile Include="FastMM4.pas">
-				<BuildOrder>1</BuildOrder>
-			</DelphiCompile>
-			<CppCompile Include="FastMM4BCB.cpp">
-				<BuildOrder>0</BuildOrder>
-			</CppCompile>
-			<DelphiCompile Include="FastMM4Messages.pas">
-				<BuildOrder>0</BuildOrder>
-			</DelphiCompile>
-			<None Include="FastMM4Options.inc"/>
-			<LibFiles Condition="'$(Platform)'=='Win32'" Include="FastMM_FullDebugMode.lib">
-				<BuildOrder>2</BuildOrder>
-				<IgnorePath>true</IgnorePath>
-			</LibFiles>
 			<CppCompile Include="RADExporter.cpp">
 				<BuildOrder>1</BuildOrder>
 			</CppCompile>
@@ -183,6 +184,7 @@
 						<Excluded_Packages Name="$(BDSBIN)\bcbofficexp160.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dcloffice2k160.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\dclofficexp160.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+						<Excluded_Packages Name="$(BDSBIN)\dclunidac160.bpl">Uni Access Components</Excluded_Packages>
 					</Excluded_Packages>
 				</CPlusPlusBuilder.Personality>
 				<Deployment/>
