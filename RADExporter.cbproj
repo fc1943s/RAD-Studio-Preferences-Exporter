@@ -46,6 +46,8 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<IncludePath>fastmm\;$(IncludePath)</IncludePath>
+			<ILINK_LibraryPath>fastmm\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<PackageImports>IPIndyImpl;bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;ibxpress;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;FMXTee;bindengine;soaprtl;DBXOracleDriver;dsnap;DBXInformixDriver;IndyCore;fmxase;CloudService;FmxTeeUI;DBXFirebirdDriver;inet;fmxobj;inetdbxpress;DBXSybaseASADriver;fmxdae;dbexpress;DataSnapIndy10ServerTransport;$(PackageImports)</PackageImports>
 			<ProjectType>FmxGuiApplication</ProjectType>
 			<Multithreaded>true</Multithreaded>
@@ -113,10 +115,19 @@
 			<UsingDelphiRTL>false</UsingDelphiRTL>
 			<DynamicRTL>false</DynamicRTL>
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-			<DCC_Define>x;xd;FullDebugMode;LoadDebugDLLDynamically;RawStackTraces;$(DCC_Define)</DCC_Define>
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<ItemGroup>
+			<DelphiCompile Include="fastmm\FastMM4.pas">
+				<BuildOrder>4</BuildOrder>
+			</DelphiCompile>
+			<CppCompile Include="fastmm\FastMM4BCB.cpp">
+				<BuildOrder>2</BuildOrder>
+			</CppCompile>
+			<DelphiCompile Include="fastmm\FastMM4Messages.pas">
+				<BuildOrder>5</BuildOrder>
+			</DelphiCompile>
+			<None Include="fastmm\FastMM4Options.inc"/>
 			<CppCompile Include="RADExporter.cpp">
 				<BuildOrder>1</BuildOrder>
 			</CppCompile>

@@ -182,17 +182,6 @@ void __fastcall TfrmMain::ImportClick(TObject* Sender)
 
 void __fastcall TfrmMain::FormCreate(TObject* Sender)
 {
-	SHELLEXECUTEINFOW info;
-	info.lpFile = ParamStr(0).c_str();
-	MessageBoxW(0, info.lpFile, L"", 0);
-
-	TStringList* a = new TStringList(NULL);
-	a->Text        = "a\r\nb\r\nc\r\nd\r\ne";
-
-	Application->Terminate();
-	return;
-
-
 	typedef bool(*_IsUserAnAdmin)(VOID);
 	_IsUserAnAdmin IsUserAnAdmin;
 	HMODULE hModule = NULL;
@@ -211,8 +200,8 @@ void __fastcall TfrmMain::FormCreate(TObject* Sender)
 		info.hwnd         = NULL;
 		info.fMask        = SEE_MASK_NOCLOSEPROCESS;
 		info.lpDirectory  = NULL;
-		ShellExecuteExW(& info);
-		Application->Terminate();
+		//ShellExecuteExW(& info);
+		//Application->Terminate();
 	}
 	FreeLibrary(hModule);
 }
