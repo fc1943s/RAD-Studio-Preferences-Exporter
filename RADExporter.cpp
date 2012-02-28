@@ -3,15 +3,18 @@
 #include <tchar.h>
 
 
-USEFORM("UfrmMain.cpp", frmMain);
-//---------------------------------------------------------------------------
+USEFORM(
+	"UfrmMain.cpp",
+	frmMain);
+
+// ---------------------------------------------------------------------------
 extern "C" int FMXmain()
 {
 	try
 	{
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
-		Application->CreateForm(__classid(TfrmMain), &frmMain);
+		Application->CreateForm(__classid(TfrmMain), & frmMain);
 		Application->Run();
 	}
 	catch(Exception& exception)
