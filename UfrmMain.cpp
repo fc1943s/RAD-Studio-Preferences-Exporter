@@ -124,7 +124,7 @@ void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 
 			TStringList* stl = new TStringList;
 			stl->LoadFromFile(tempFile);
-			for(int i = stl->Count - 1; i >= 0; i--)
+			for(int i = stl->Count - 1; i >= 0; --i)
 			{
 				if(stl->Strings[i].Pos((UnicodeString)"\"" + "\\\\") > 0 || stl->Strings[i].Pos("C:\\") > 0 || stl->Strings[i].Pos("c:\\") > 0 || stl->Strings[i].Pos("D:\\") > 0 || stl->Strings[i].Pos("d:\\") > 0 || stl->Strings[i].Pos("\"RegOwner\"=\"") > 0)
 				{
@@ -191,7 +191,7 @@ void __fastcall TfrmMain::ImportClick(TObject* Sender)
 		TZipFile* zip = new TZipFile;
 		try
 		{
-			if(TZipFile::IsValid(opdImport->FileName))
+			if(!TZipFile::IsValid(opdImport->FileName))
 			{
 				throw new Exception("Invalid file format.");
 			}
@@ -201,12 +201,19 @@ void __fastcall TfrmMain::ImportClick(TObject* Sender)
 			UnicodeString tempDir = getTempFile() + "\\";
 
 			zip->ExtractAll(tempDir);
-			zip->Extract("/C", templatesPath + "C", true);
-			zip->Extract("/Delphi", templatesPath + "Delphi", true);
 
 			if(!DirectoryExists(tempDir))
 			{
 				throw new Exception("File couldn't be imported. Try again later.");
+			}
+
+			for(int i = 0; i < zip->FileCount; ++i)
+			{
+				if(zip->FileNames[i].Pos("C/") != 1 && zip->FileNames[i].Pos("Delphi/") != 1)
+				{
+					continue;
+				}
+				zip->Extract(zip->FileNames[i], templatesPath, true);
 			}
 
 			TSearchRec sr;
@@ -214,14 +221,6 @@ void __fastcall TfrmMain::ImportClick(TObject* Sender)
 			{
 				do
 				{
-					if(sr.Name == "C" || sr.Name == "Delphi")
-					{
-						if(!MoveFileExW(UnicodeString(tempDir + sr.Name).c_str(), UnicodeString(templatesPath).c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
-						{
-							throw new Exception("Files couldn't be moved. Try again later.");
-						}
-						continue;
-					}
 					if(ExtractFileExt(sr.Name) == ".config" || ExtractFileExt(sr.Name) == ".dst")
 					{
 						if(!MoveFileExW(UnicodeString(tempDir + sr.Name).c_str(), UnicodeString(dataPath + sr.Name).c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))
