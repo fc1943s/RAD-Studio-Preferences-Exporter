@@ -13,7 +13,8 @@ TfrmMain* frmMain;
 
 
 __fastcall TfrmMain::TfrmMain(TComponent* Owner) : TForm(Owner)
-{ }
+{
+}
 
 UnicodeString expandPath(UnicodeString path)
 {
@@ -22,39 +23,39 @@ UnicodeString expandPath(UnicodeString path)
 	return (UnicodeString)result;
 }
 
-enum class Directories
+enum class Directory
 {
 	SYSTEM32, WINDOWS, TEMP, WINLETTER, DOCUMENTS
 };
 
-UnicodeString getDirectory(Directories directory)
+UnicodeString getDirectory(Directory directory)
 {
 	wchar_t result[MAX_PATH];
 	memset(result, 0, MAX_PATH* 2);
 	switch(directory)
 	{
-		case Directories::SYSTEM32:
+		case Directory::SYSTEM32:
 		{
 			GetSystemDirectoryW(result, MAX_PATH);
 			break;
 		}
-		case Directories::WINDOWS:
+		case Directory::WINDOWS:
 		{
 			GetWindowsDirectoryW(result, MAX_PATH);
 			break;
 		}
-		case Directories::TEMP:
+		case Directory::TEMP:
 		{
 			GetTempPathW(MAX_PATH, result);
 			break;
 		}
-		case Directories::WINLETTER:
+		case Directory::WINLETTER:
 		{
 			GetWindowsDirectoryW(result, MAX_PATH);
 			result[1] = L'\0';
 			break;
 		}
-		case Directories::DOCUMENTS:
+		case Directory::DOCUMENTS:
 		{
 			TRegistry* reg = new TRegistry;
 			reg->RootKey   = HKEY_CURRENT_USER;
@@ -76,7 +77,9 @@ UnicodeString getDirectory(Directories directory)
 }
 
 UnicodeString getTempFile()
-{ return getDirectory(Directories::TEMP) + "temp" + FormatDateTime("hhnnsszzz", Now()); }
+{
+	return getDirectory(Directory::TEMP) + "temp" + FormatDateTime("hhnnsszzz", Now());
+}
 
 void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 {
@@ -91,7 +94,7 @@ void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 		}
 
 		UnicodeString dataPath = GetEnvironmentVariableW("AppData") + "\\Embarcadero\\BDS\\9.0\\";
-		UnicodeString templatesPath = getDirectory(Directories::DOCUMENTS) + "\\RAD Studio\\code_templates\\";
+		UnicodeString templatesPath = getDirectory(Directory::DOCUMENTS) + "\\RAD Studio\\code_templates\\";
 		if(!DirectoryExists(dataPath) || !DirectoryExists(templatesPath))
 		{
 			throw new Exception("Embarcadero data folder couldn't be found. An RAD Studio installation is required.");
@@ -182,7 +185,7 @@ void __fastcall TfrmMain::ImportClick(TObject* Sender)
 	if(opdImport->Execute())
 	{
 		UnicodeString dataPath      = GetEnvironmentVariableW("AppData") + "\\Embarcadero\\BDS\\9.0\\";
-		UnicodeString templatesPath = getDirectory(Directories::DOCUMENTS) + "\\RAD Studio\\code_templates\\";
+		UnicodeString templatesPath = getDirectory(Directory::DOCUMENTS) + "\\RAD Studio\\code_templates\\";
 		if(!DirectoryExists(dataPath) || !DirectoryExists(templatesPath))
 		{
 			throw new Exception("Embarcadero data folder couldn't be found. An RAD Studio installation is required.");
