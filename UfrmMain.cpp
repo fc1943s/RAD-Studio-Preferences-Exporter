@@ -89,7 +89,7 @@ void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 		{
 			if(!DeleteFileW(svdExport->FileName))
 			{
-				throw new Exception("File couldn't be create. Please try again.");
+				throw new Exception("File couldn't be created. Please try again.");
 			}
 		}
 
@@ -97,7 +97,7 @@ void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 		UnicodeString templatesPath = getDirectory(Directory::DOCUMENTS) + "\\RAD Studio\\code_templates\\";
 		if(!DirectoryExists(dataPath) || !DirectoryExists(templatesPath))
 		{
-			throw new Exception("Embarcadero data folder couldn't be found. An RAD Studio installation is required.");
+			throw new Exception("Embarcadero data folder couldn't be found. A RAD Studio installation is required.");
 		}
 
 		//
@@ -122,7 +122,7 @@ void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 
 			if(!FileExists(tempFile))
 			{
-				throw new Exception("Registry file couldn't be create. Please try again.");
+				throw new Exception("Registry file couldn't be created. Please try again.");
 			}
 
 			TStringList* stl = new TStringList;
@@ -139,7 +139,7 @@ void __fastcall TfrmMain::btnExportClick(TObject* Sender)
 		}
 		else
 		{
-			throw new Exception("Registry file couldn't be create. Please try again.");
+			throw new Exception("Registry file couldn't be created. Please try again.");
 		}
 
 
@@ -188,7 +188,7 @@ void __fastcall TfrmMain::ImportClick(TObject* Sender)
 		UnicodeString templatesPath = getDirectory(Directory::DOCUMENTS) + "\\RAD Studio\\code_templates\\";
 		if(!DirectoryExists(dataPath) || !DirectoryExists(templatesPath))
 		{
-			throw new Exception("Embarcadero data folder couldn't be found. An RAD Studio installation is required.");
+			throw new Exception("Embarcadero data folder couldn't be found. A RAD Studio installation is required.");
 		}
 
 		TZipFile* zip = new TZipFile;
